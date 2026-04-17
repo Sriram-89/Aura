@@ -1,21 +1,27 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
+import "./globals.css";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+});
 
 export const metadata: Metadata = {
-  title: 'Aura — Your AI Companion',
-  description: 'A thoughtful AI companion, always present.',
+  title: "Aura - Premium AI Companion",
+  description: "Aura+ emotional AI companion in calm Telugu + English tone.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>{children}</body>
+      <body className={`${playfair.variable} ${inter.variable}`}>{children}</body>
     </html>
   );
 }

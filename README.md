@@ -27,10 +27,6 @@ aura/
 - pnpm >= 8 (`npm i -g pnpm`)
 - Firebase CLI (`npm i -g firebase-tools`)
 - Expo CLI (`npm i -g expo-cli`) — for mobile
-- An [Anthropic API key](https://console.anthropic.com/)
-- A [Firebase project](https://console.firebase.google.com/)
-
----
 
 ## 1. Clone & Install
 
