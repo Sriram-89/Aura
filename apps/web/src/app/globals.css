@@ -1,0 +1,92 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0d0d10;
+  --bg2: #0f0f12;
+  --bg3: #141417;
+  --bg4: #1a1a1f;
+  --surface: #222228;
+  --border: rgba(255,255,255,0.055);
+  --border2: rgba(255,255,255,0.11);
+  --text: #f0ede8;
+  --text2: #9e9b95;
+  --text3: #5a5758;
+  --accent: #c8a97e;
+  --accent2: #e8c99a;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: radial-gradient(circle at center, #0b0b12, #050507);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 2px; }
+
+::selection { background: rgba(200, 169, 126, 0.2); }
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap');
+
+@keyframes sidebar-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.65); }
+}
+.aura-orb {
+  border-radius: 50%;
+  transition: background 1.2s ease, box-shadow 1.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.aura-orb::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.15;
+  filter: blur(6px);
+  transition: opacity 0.6s ease;
+}
+
+.aura-orb-breathe {
+  animation: aura-breathe 4s ease-in-out infinite;
+}
+
+.aura-orb-think {
+  animation: aura-think 1s ease-in-out infinite;
+}
+
+.aura-orb-listen {
+  animation: aura-listen 0.8s ease-in-out infinite;
+}
+
+@keyframes aura-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.07); opacity: 1; }
+}
+
+@keyframes aura-think {
+  0%, 100% { transform: scale(0.92); opacity: 0.65; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes aura-listen {
+  0%, 100% { transform: scale(1.05); opacity: 0.85; }
+  50% { transform: scale(0.96); opacity: 1; }
+}

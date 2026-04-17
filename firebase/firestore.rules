@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── User data: only the owner can access ──────────────────────────────
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── Message validation ─────────────────────────────────────────────────
+    match /users/{userId}/conversations/{convId}/messages/{msgId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['role', 'text', 'clientTimestamp'])
+        && request.resource.data.role in ['user', 'assistant']
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 4000
+        && request.resource.data.clientTimestamp is int;
+
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['synced']);
+
+      allow delete: if false;
+    }
+
+    // ── Conversation metadata ──────────────────────────────────────────────
+    match /users/{userId}/conversations/{convId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAny(['title', 'lastMood', 'updatedAt'])
+        && (!('title' in request.resource.data) || request.resource.data.title is string)
+        && (!('title' in request.resource.data) || request.resource.data.title.size() <= 200);
+
+      allow delete: if false;
+    }
+
+    // ── Mood history ───────────────────────────────────────────────────────
+    match /users/{userId}/moodHistory/{dateKey} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      allow create, update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['mood'])
+        && request.resource.data.mood in ['sad', 'low', 'neutral', 'calm', 'happy', 'excited']
+        // dateKey must be YYYY-MM-DD
+        && dateKey.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+
+      allow delete: if false;
+    }
+
+    // ── Block all other paths ──────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
